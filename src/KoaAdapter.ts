@@ -36,6 +36,7 @@ export class KoaAdapter extends AbstractHttpAdapter<
   Koa.Request,
   Koa.Response
 > {
+
   private router?: KoaRouter;
 
   constructor(instance: Koa = new Koa()) {
@@ -178,7 +179,7 @@ export class KoaAdapter extends AbstractHttpAdapter<
     this.httpServer = http.createServer(this.getInstance<Koa>().callback());
   }
 
-  public useStaticAssets(path: string, options?: ServeStaticOptions): any {
+  public useStaticAssets(path: string, options?: ServeStaticOptions): void {
     const serveStaticMiddleware = loadPackage(
       'koa-static',
       'KoaAdapter.useStaticAssets()',
@@ -187,7 +188,7 @@ export class KoaAdapter extends AbstractHttpAdapter<
     this.getInstance<Koa>().use(serveStaticMiddleware(path, options));
   }
 
-  public setViewEngine(options: KoaViewsOptions | any): any {
+  public setViewEngine(options: KoaViewsOptions | any): void {
     const viewsMiddleware = loadPackage(
       'koa-views',
       'KoaAdapter.setViewEngine()',
@@ -212,7 +213,7 @@ export class KoaAdapter extends AbstractHttpAdapter<
     return request.url;
   }
 
-  public status(response: Koa.Response, statusCode: number): any {
+  public status(response: Koa.Response, statusCode: number): void {
     response.status = statusCode;
   }
 
@@ -236,7 +237,7 @@ export class KoaAdapter extends AbstractHttpAdapter<
     response: Koa.Response,
     statusCode: number,
     url: string,
-  ): any {
+  ): void {
     response.set('Location', url);
 
     return koaReply(response, null, statusCode);
@@ -245,22 +246,30 @@ export class KoaAdapter extends AbstractHttpAdapter<
   public setErrorHandler(
     handler: (err: Error, ctx: Koa.Context) => void,
     prefix?: string,
-  ): any {
+  ): void {
     this.getInstance<Koa>().on('error', handler);
   }
 
   public setNotFoundHandler(
     handler: NestMiddleware['use'],
     prefix?: string,
-  ): any {
+  ): void {
     this.getInstance<Koa>().use(nestToKoaMiddleware(handler));
   }
 
-  public setHeader(response: Koa.Response, name: string, value: string): any {
+  public getHeader?(response: Koa.Response, name: string): string {
+    return response.get(name);
+  }
+
+  public setHeader(response: Koa.Response, name: string, value: string): void {
     response.set(name, value);
   }
 
-  public registerParserMiddleware(prefix?: string): any {
+  public appendHeader(response: Koa.Response, name: string, value: string): void {
+    return response.set(name, value);
+  }
+
+  public registerParserMiddleware(prefix?: string): void {
     this.getRouter().use(koaBodyBarser(), async (ctx, next) => {
       // This is because nest expects params in request object so we need to extend it
       Object.assign(ctx.request, { params: ctx.params });
@@ -301,6 +310,9 @@ export class KoaAdapter extends AbstractHttpAdapter<
         [RequestMethod.PATCH]: router.patch,
         [RequestMethod.POST]: router.post,
         [RequestMethod.PUT]: router.put,
+        [RequestMethod.SEARCH]: () => {
+          throw new Error('Not supported')
+        }
       };
 
       const routeMethod = (
@@ -327,11 +339,11 @@ export class KoaAdapter extends AbstractHttpAdapter<
     throw new Error('Versioning not yet supported in Koa');
   }
 
-  public end(response: Koa.Response, message: string | undefined): any {
+  public end(response: Koa.Response, message: string | undefined): void {
     response.res.end(message);
   }
 
-  public isHeadersSent(response: Koa.Response): any {
+  public isHeadersSent(response: Koa.Response): boolean {
     return response.headerSent;
   }
 }
