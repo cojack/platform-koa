@@ -1,6 +1,6 @@
 {
-  "name": "nest-koa-adapter",
-  "version": "3.1.0",
+  "name": "@nestpro/platform-koa",
+  "version": "10.0.0",
   "description": "Koa HTTP adapter for Nest.js",
   "main": "dist/index.js",
   "files": [
@@ -24,6 +24,12 @@
     "koa-router"
   ],
   "author": "Martin Seidel",
+  "contributors": [
+    {
+      "name": "cojack",
+      "email": "xcojack@gmail.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "koa": "^2.15.0",
@@ -48,14 +54,14 @@
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-router": "^7.4.8",
     "@types/koa-static": "^4.0.4",
-    "@types/koa-views": "2.0.4",
-    "@types/koa__cors": "3.3.1",
+    "@types/koa-views": "7.0.0",
+    "@types/koa__cors": "5.0.0",
     "@types/mocha": "10.0.6",
     "@types/supertest": "2.0.16",
-    "@typescript-eslint/eslint-plugin": "5.62.0",
-    "@typescript-eslint/parser": "5.62.0",
+    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/parser": "7.9.0",
     "eslint": "8.57.0",
-    "eslint-config-prettier": "8.10.0",
+    "eslint-config-prettier": "9.1.0",
     "eslint-plugin-mocha": "10.3.0",
     "eslint-plugin-prettier": "4.2.1",
     "koa-static": "5.0.0",
@@ -63,10 +69,10 @@
     "lodash.template": "4.5.0",
     "mocha": "10.3.0",
     "np": "7.7.0",
-    "prettier": "2.8.8",
+    "prettier": "3.2.5",
     "reflect-metadata": "0.1.14",
-    "rxjs": "7.8.1",
-    "supertest": "6.3.4",
+    "rxjs": "^7.8.1",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
